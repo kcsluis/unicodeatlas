@@ -805,7 +805,7 @@ const UnicodeExplorer = () => {
               </div>
             )}
             
-            {visibleCharacters.length === 0 && filteredCharacters.length === 0 && (
+            {!isLoading && allCharacters.length > 0 && visibleCharacters.length === 0 && filteredCharacters.length === 0 && (
               <div className="flex justify-center items-center h-48">
                 <div className="text-center">
                   <p className={darkMode ? 'mb-2 text-gray-400' : 'mb-2 text-gray-500'}>No characters found</p>
