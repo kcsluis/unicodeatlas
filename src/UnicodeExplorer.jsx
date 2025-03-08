@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom'; // If using React Router
 import { createPortal } from 'react-dom';
-import { Search, Filter, Moon, Sun, Type, X, Copy, Info, Star, HelpCircle, Check } from 'lucide-react';
+import { Search, Filter, Moon, Sun, Type, X, Copy, Link, Info, Star, HelpCircle, Check } from 'lucide-react';
 
 // Available Google fonts to select from
 const availableFonts = [
@@ -36,10 +37,31 @@ const Toast = ({ message, onClose }) => {
 
 // Main component
 const UnicodeExplorer = () => {
+
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedBlock, setSelectedBlock] = useState('');
+
+  useEffect(() => {
+    // Debounce to avoid excessive updates
+    const handler = setTimeout(() => {
+      const params = new URLSearchParams();
+
+      if (searchTerm) params.set("search", searchTerm);
+      if (selectedCategory) params.set("category", selectedCategory);
+      if (selectedBlock) params.set("block", selectedBlock);
+
+      navigate(`/?${params.toString()}`, { replace: true });
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(handler); // Cleanup previous debounce
+  }, [searchTerm, selectedCategory, selectedBlock, navigate]);
+
   // State declarations
   const [allCharacters, setAllCharacters] = useState([]);
   const [visibleCharacters, setVisibleCharacters] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedChar, setSelectedChar] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -49,8 +71,6 @@ const UnicodeExplorer = () => {
     return storedFavorites ? JSON.parse(storedFavorites) : [];
   });
   const [toast, setToast] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedBlock, setSelectedBlock] = useState('');
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const storedDarkMode = localStorage.getItem('unicodeDarkMode');
@@ -71,6 +91,10 @@ const UnicodeExplorer = () => {
   const fontButtonRef = useRef(null);
   const isSearching = searchTerm.length > 0; // Detect if searching
 
+  const closeDetails = () => {
+    setShowDetails(false);
+    setSearchParams({}); // Clears the query parameter from the URL
+  };
 
   // Load preferences from localStorage on initial render
   useEffect(() => {
@@ -83,6 +107,27 @@ const UnicodeExplorer = () => {
     if (storedFont) {
       setSelectedFont(storedFont);
     }
+  }, []);
+
+  // Check for char in query parameters and automatically open the details panel
+  useEffect(() => {
+    const charCode = searchParams.get('char');
+
+    // Wait until allCharacters is loaded before checking
+    if (charCode && allCharacters.length > 0) {
+      const char = allCharacters.find(c => c.Codepoint === charCode);
+      if (char) {
+        setSelectedChar(char);
+        setShowDetails(true);
+      }
+    }
+  }, [allCharacters, searchParams]);
+
+  useEffect(() => {
+    // Reset state when the page is loaded
+    setSearchTerm("");
+    setSelectedCategory("");
+    setSelectedBlock("");
   }, []);
 
   // Save dark mode preference
@@ -317,6 +362,7 @@ const UnicodeExplorer = () => {
   const viewDetails = (char) => {
     setSelectedChar(char);
     setShowDetails(true);
+    setSearchParams({ char: char.Codepoint });
   };
 
   // Clear all filters
@@ -381,8 +427,9 @@ const UnicodeExplorer = () => {
         animationDelay: `${index * 8}ms`, // Staggered delay
       }}>
       <div 
-        className={`flex justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-white border-b border-gray-100'} p-2`} 
+        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-white border-b border-gray-100'} p-2`} 
         style={{ fontFamily: selectedFont }}
+        onClick={() => copyToClipboard(char.Character)}
       >
         {char.Character}
       </div>
@@ -610,7 +657,7 @@ const UnicodeExplorer = () => {
         {/* Favorites rail */}
         {favoriteCharacters.length > 0 && (
           <div className={`${darkMode ? 'bg-gray-950 border-b border-gray-800' : 'bg-indigo-50 border-b border-indigo-100'} p-3`}>
-            <div className="container mx-auto">
+            <div className="container mx-auto overflow-visible">
               <div className="flex items-center mb-2">
                 <h2 className={`text-sm font-semibold ${darkMode ? 'text-gray-200' : 'text-indigo-800'}`}>Favorites</h2>
                 <span className={`ml-2 text-xs ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-indigo-200 text-indigo-800'} px-2 py-0.5 rounded-full`}>
@@ -618,8 +665,8 @@ const UnicodeExplorer = () => {
                 </span>
               </div>
               
-              <div className="overflow-x-auto pb-2">
-                <div className="flex gap-3" style={{ minWidth: 'max-content' }}>
+              <div className="pb-2">
+                <div className="flex gap-3 overflow-visible" style={{ minWidth: 'max-content' }}>
                   {favoriteCharacters.map((char) => (
                     <div key={char.Codepoint} className="w-14 flex-shrink-0">
                       <div className={`${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} rounded shadow-lg overflow-hidden transition-shadow`}>
@@ -713,7 +760,7 @@ const UnicodeExplorer = () => {
             className="overlay fixed inset-0 bg-black bg-opacity-30 z-20 flex justify-end"
             onClick={(e) => {
               if (e.target === e.currentTarget) {
-                setShowDetails(false);
+                closeDetails();
               }
             }}
           >
@@ -730,7 +777,7 @@ const UnicodeExplorer = () => {
                 </h2>
                 <button 
                   className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-500 hover:text-indigo-800 hover:bg-indigo-100 rounded'}
-                  onClick={() => setShowDetails(false)}
+                  onClick={closeDetails}
                 >
                   <X size={20} />
                 </button>
@@ -741,13 +788,13 @@ const UnicodeExplorer = () => {
                   <span className="text-[194px] min-h-[1.5em]" style={{ fontFamily: selectedFont }}>{selectedChar.Character}</span>
                 </div>
                 
-                <div className="flex justify-center gap-4 mb-6">
+                <div className="flex justify-center gap-4 mb-10">
                   <button
                     className={`flex items-center gap-1 px-3 py-1.5 ${darkMode ? 'bg-indigo-700 hover:bg-indigo-600 text-white' : 'bg-indigo-100 hover:bg-indigo-300 text-indigo-800'} rounded-md transition-colors`}
                     onClick={() => copyToClipboard(selectedChar.Character)}
                   >
                     <Copy size={16} />
-                    Copy
+                    Copy Character
                   </button>
                   
                   <button
@@ -765,32 +812,36 @@ const UnicodeExplorer = () => {
                     <Star size={16} fill={favorites.includes(selectedChar.Codepoint) ? "currentColor" : "none"} />
                     {favorites.includes(selectedChar.Codepoint) ? 'Remove Favorite' : 'Add Favorite'}
                   </button>
+
+                  <button
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-colors ${
+                      darkMode 
+                        ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' 
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    }`}
+                    onClick={() => {
+                      const deepLink = `${window.location.origin}/?char=${encodeURIComponent(selectedChar.Codepoint)}`;
+                      navigator.clipboard.writeText(deepLink);
+                      setToast("Deep link copied!");
+                    }}
+                  >
+                    <Link size={16} />
+                    Deep Link
+                  </button>
                 </div>
                 
-                <div className="space-y-4">
-                  <div>
-                    <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Codepoint</h3>
-                    <p className={`mb-1 text-lg`}>{selectedChar.Codepoint}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Category</h3>
-                    <p className={`mb-1 text-lg`}>{selectedChar["Category_long"] || selectedChar.Category}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Unicode Block</h3>
-                    <p className={`mb-1 text-lg`}>{selectedChar["Unicode Block"]}</p>
-                  </div>
-                  
-                  {selectedChar["Decimal Entity"] && (
+                <div className="space-y-6">
+                  <div className="flex space-x-6">
                     <div>
-                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>HTML Entities</h3>
-                      <p className={`mb-1 text-lg`}>Decimal: {selectedChar["Decimal Entity"]}</p>
-                      <p className={`mb-1 text-lg`}>Hex: {selectedChar["Hex Entity"]}</p>
-                      {selectedChar["Named Entity"] && selectedChar["Named Entity"] !== "&;" && <p>Named: {selectedChar["Named Entity"]}</p>}
+                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Codepoint</h3>
+                      <p className="mb-1 text-lg">{selectedChar.Codepoint}</p>
                     </div>
-                  )}
+
+                    <div>
+                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Category</h3>
+                      <p className="mb-1 text-lg">{selectedChar["Category_long"] || selectedChar.Category}</p>
+                    </div>
+                  </div>
                   
                   {selectedChar["Character Description"] && (
                     <div>
@@ -816,18 +867,34 @@ const UnicodeExplorer = () => {
                   )}
                   
                   {selectedChar["Wikipedia Link"] && (
-                    <div className={`pb-8`}>
+                    <div className={``}>
                       <h3 className={`text-xs mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Links</h3>
                       <a 
                         href={selectedChar["Wikipedia Link"]} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className={darkMode ? 'text-indigo-400 hover:underline' : 'text-indigo-600 hover:underline'}
+                        className={`text-lg mb-2 ${darkMode ? 'text-indigo-400 hover:underline' : 'text-indigo-600 hover:underline'}`}
                       >
                         Wikipedia
                       </a>
                     </div>
                   )}
+
+                  <div>
+                    <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Unicode Block</h3>
+                    <p className={`mb-1 text-lg`}>{selectedChar["Unicode Block"]}</p>
+                  </div>
+                  
+                  {selectedChar["Decimal Entity"] && (
+                    <div className={`pb-6`}>
+                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>HTML Entities</h3>
+                      <p className={`mb-1 text-lg`}>Decimal: {selectedChar["Decimal Entity"]}</p>
+                      <p className={`mb-1 text-lg`}>Hex: {selectedChar["Hex Entity"]}</p>
+                      {selectedChar["Named Entity"] && selectedChar["Named Entity"] !== "&;" && <p>Named: {selectedChar["Named Entity"]}</p>}
+                    </div>
+                  )}
+
+
                 </div>
               </div>
             </div>
