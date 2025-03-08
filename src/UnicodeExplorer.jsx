@@ -541,7 +541,7 @@ const UnicodeExplorer = () => {
       {toast && <Toast message={toast} onClose={closeToast} />}
       
       {/* Header */}
-      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0 z-10`}>
+      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0 z-30`}>
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-left sm:items-center gap-3 sm:gap-2">
           <h1 className={`${darkMode ? 'text-gray-200' : 'text-gray-800'} py-1 sm:py-0 text-md sm:text-xl`}>Unicode Atlas</h1>
           
@@ -713,7 +713,7 @@ const UnicodeExplorer = () => {
       )}
 
       {/* Main content */}
-      <main className="flex-1 overflow-hidden flex flex-col">
+      <main className="flex-1 overflow-visible flex flex-col">
         {/* Favorites rail */}
         {favoriteCharacters.length > 0 && (
           <div className={`${darkMode ? 'bg-gray-950 border-b border-gray-800' : 'bg-indigo-50 border-b border-indigo-100'} p-3`}>
