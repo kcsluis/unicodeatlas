@@ -36,27 +36,27 @@ const Toast = ({ message, onClose }) => {
 };
 
 // Count unsupported characters in batches, off the main thread
-const checkCharacterSupport = (characters, font, setUnsupportedCount) => {
-  let unsupportedCount = 0;
-  let index = 0;
+// const checkCharacterSupport = (characters, font, setUnsupportedCount) => {
+//   let unsupportedCount = 0;
+//   let index = 0;
 
-  const processBatch = (deadline) => {
-    while (index < characters.length && (deadline?.timeRemaining?.() > 0 || !deadline)) {
-      if (!isCharacterSupported(characters[index].Character, font)) {
-        unsupportedCount++;
-      }
-      index++;
-    }
+//   const processBatch = (deadline) => {
+//     while (index < characters.length && (deadline?.timeRemaining?.() > 0 || !deadline)) {
+//       if (!isCharacterSupported(characters[index].Character, font)) {
+//         unsupportedCount++;
+//       }
+//       index++;
+//     }
 
-    setUnsupportedCount(unsupportedCount);
+//     setUnsupportedCount(unsupportedCount);
 
-    if (index < characters.length) {
-      (window.requestIdleCallback || setTimeout)(processBatch, 50); // Fallback for unsupported browsers
-    }
-  };
+//     if (index < characters.length) {
+//       (window.requestIdleCallback || setTimeout)(processBatch, 50); // Fallback for unsupported browsers
+//     }
+//   };
 
-  (window.requestIdleCallback || setTimeout)(processBatch, 50);
-};
+//   (window.requestIdleCallback || setTimeout)(processBatch, 50);
+// };
 
 // Helper function to count characters
 // DOES NOT WORK WELL
@@ -133,10 +133,10 @@ const UnicodeExplorer = () => {
 
   const [unsupportedCharacterCount, setUnsupportedCharacterCount] = useState(0);
 
-  useEffect(() => {
-    if (!allCharacters.length) return;
-    checkCharacterSupport(allCharacters, selectedFont, setUnsupportedCharacterCount);
-  }, [allCharacters, selectedFont]);
+  // useEffect(() => {
+  //   if (!allCharacters.length) return;
+  //   checkCharacterSupport(allCharacters, selectedFont, setUnsupportedCharacterCount);
+  // }, [allCharacters, selectedFont]);
 
   const closeDetails = () => {
     setShowDetails(false);
