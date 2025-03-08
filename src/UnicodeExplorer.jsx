@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom'; // If using React Router
 import { createPortal } from 'react-dom';
-import { Search, Filter, Moon, Sun, Type, X, Copy, Link, Info, Star, HelpCircle, Check } from 'lucide-react';
+import { Search, Filter, Moon, Sun, Type, X, Copy, Link, Info, Star, HelpCircle, AlertCircle, Check } from 'lucide-react';
 
 // Available Google fonts to select from
 const availableFonts = [
@@ -34,6 +34,46 @@ const Toast = ({ message, onClose }) => {
     </div>
   );
 };
+
+// Count unsupported characters in batches, off the main thread
+const checkCharacterSupport = (characters, font, setUnsupportedCount) => {
+  let unsupportedCount = 0;
+  let index = 0;
+
+  const processBatch = (deadline) => {
+    while (index < characters.length && deadline.timeRemaining() > 0) {
+      if (!isCharacterSupported(characters[index].Character, font)) {
+        unsupportedCount++;
+      }
+      index++;
+    }
+
+    setUnsupportedCount(unsupportedCount);
+
+    if (index < characters.length) {
+      requestIdleCallback(processBatch); // Continue processing in idle time
+    }
+  };
+
+  requestIdleCallback(processBatch);
+};
+
+// Helper function to count characters
+// DOES NOT WORK WELL
+// const isCharacterSupported = (char, font) => {
+//   const canvas = document.createElement("canvas");
+//   const context = canvas.getContext("2d");
+
+//   context.font = `20px ${font}, sans-serif`;
+//   const charWidth = context.measureText(char).width;
+
+//   context.font = `20px Arial, sans-serif`; // Fallback font
+//   const fallbackWidth = context.measureText(char).width;
+
+//   return charWidth !== fallbackWidth; // If widths differ, it's supported
+// };
+
+
 
 // Main component
 const UnicodeExplorer = () => {
@@ -90,6 +130,13 @@ const UnicodeExplorer = () => {
   const [buttonPosition, setButtonPosition] = useState({ top: 0, right: 0, height: 0 });
   const fontButtonRef = useRef(null);
   const isSearching = searchTerm.length > 0; // Detect if searching
+
+  const [unsupportedCharacterCount, setUnsupportedCharacterCount] = useState(0);
+
+  useEffect(() => {
+    if (!allCharacters.length) return;
+    checkCharacterSupport(allCharacters, selectedFont, setUnsupportedCharacterCount);
+  }, [allCharacters, selectedFont]);
 
   const closeDetails = () => {
     setShowDetails(false);
@@ -159,7 +206,7 @@ const UnicodeExplorer = () => {
     };
   }, [isFontMenuOpen]);
   
-  const BATCH_SIZE = 50; // Number of characters to load at once
+  const BATCH_SIZE = 100; // Number of characters to load at once
 
   // Something about accessing favorites stored in local storage
   useEffect(() => {
@@ -422,7 +469,7 @@ const UnicodeExplorer = () => {
 
   // Character Card Component
   const CharacterCard = ({ char, isFavorite, index, showActions = true }) => { return (
-    <div className={`character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow`}
+    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow`}
       style={{
         animationDelay: `${index * 8}ms`, // Staggered delay
       }}>
@@ -431,8 +478,21 @@ const UnicodeExplorer = () => {
         style={{ fontFamily: selectedFont }}
         onClick={() => copyToClipboard(char.Character)}
       >
-        {char.Character}
+        {char.Category_long === "Separator, Space" ? (
+          <span className={`inline-block border h-[0.8em] border-dashed ${darkMode ? 'bg-pink-950 border-pink-400' : 'bg-pink-50 border-pink-300'} py-1`}>{char.Character}</span>
+        ) : (
+          char.Character
+        )}
       </div>
+      {/* Flag to show whether character is supported*/}
+      {/*{!isCharacterSupported(char.Character, selectedFont) && (
+        <span title="This character is not supported by the selected font" className={`absolute top-1 right-1 ${darkMode ? 'bg-orange-900 text-orange-400' : 'bg-orange-200 text-orange-500'} px-1 py-1 rounded`}>
+          <AlertCircle 
+            size={12} 
+            className=""
+          />
+        </span>
+      )}*/}
       <div className="p-2">
         <h3 className={`text-xs sm:text-sm truncate ${darkMode ? 'text-gray-300' : 'text-gray-800'}`} title={toTitleCase(char.Name)}>
           {toTitleCase(char.Name)}
@@ -676,7 +736,11 @@ const UnicodeExplorer = () => {
                           title="Click to copy"
                           style={{ fontFamily: selectedFont }}
                         >
-                          {char.Character}
+                          {char.Category_long === "Separator, Space" ? (
+                            <span className={`inline-block border h-[0.8em] border-dashed ${darkMode ? 'bg-pink-950 border-pink-400' : 'bg-pink-50 border-pink-300'} py-1`}>{char.Character}</span>
+                          ) : (
+                            char.Character
+                          )}
                         </div>
                         <div className={`${darkMode ? 'border-t border-gray-700 bg-gray-800' : 'border-t border-gray-100 bg-white'} p-1 flex justify-between items-center`}>
                           <button
@@ -712,6 +776,11 @@ const UnicodeExplorer = () => {
                 Showing {visibleCharacters.length} of {filteredCharacters.length} characters
                 {(searchTerm || selectedCategory || selectedBlock) && " (filtered)"}
               </div>
+              {/*Text to show count of characters supported by selected font
+              <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                {allCharacters.length - unsupportedCharacterCount} characters supported by {selectedFont.match(/'([^']+)'|([^,]+)/)[1] || selectedFont} (
+                {Math.round(((allCharacters.length - unsupportedCharacterCount) / allCharacters.length) * 100)}%)
+              </p>*/}
             </div>
             
             {/* Character grid */}
@@ -785,7 +854,13 @@ const UnicodeExplorer = () => {
               
               <div className="pt-0 pl-6 pr-6 pb-6">
                 <div className={`flex justify-center items-center mb-6 p-4 ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-lg`}>
-                  <span className="text-[194px] min-h-[1.5em]" style={{ fontFamily: selectedFont }}>{selectedChar.Character}</span>
+                  <span className="text-[194px] min-h-[1.5em]" style={{ fontFamily: selectedFont }}>
+                    {selectedChar.Category_long === "Separator, Space" ? (
+                      <span className={`inline-block border h-[1.5em] px-1 border-dashed ${darkMode ? 'bg-pink-950 border-pink-400' : 'bg-pink-50 border-pink-300'} py-1`}>{selectedChar.Character}</span>
+                    ) : (
+                      selectedChar.Character
+                    )}
+                  </span>
                 </div>
                 
                 <div className="flex justify-center gap-4 mb-10">
