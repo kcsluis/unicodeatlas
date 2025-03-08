@@ -541,7 +541,7 @@ const UnicodeExplorer = () => {
       {toast && <Toast message={toast} onClose={closeToast} />}
       
       {/* Header */}
-      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0 z-30`}>
+      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0`}>
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-left sm:items-center gap-3 sm:gap-2">
           <h1 className={`${darkMode ? 'text-gray-200' : 'text-gray-800'} py-1 sm:py-0 text-md sm:text-xl`}>Unicode Atlas</h1>
           
