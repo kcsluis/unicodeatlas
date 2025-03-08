@@ -41,7 +41,7 @@ const checkCharacterSupport = (characters, font, setUnsupportedCount) => {
   let index = 0;
 
   const processBatch = (deadline) => {
-    while (index < characters.length && deadline.timeRemaining() > 0) {
+    while (index < characters.length && (deadline?.timeRemaining?.() > 0 || !deadline)) {
       if (!isCharacterSupported(characters[index].Character, font)) {
         unsupportedCount++;
       }
@@ -51,11 +51,11 @@ const checkCharacterSupport = (characters, font, setUnsupportedCount) => {
     setUnsupportedCount(unsupportedCount);
 
     if (index < characters.length) {
-      requestIdleCallback(processBatch); // Continue processing in idle time
+      (window.requestIdleCallback || setTimeout)(processBatch, 50); // Fallback for unsupported browsers
     }
   };
 
-  requestIdleCallback(processBatch);
+  (window.requestIdleCallback || setTimeout)(processBatch, 50);
 };
 
 // Helper function to count characters
@@ -541,7 +541,7 @@ const UnicodeExplorer = () => {
       {toast && <Toast message={toast} onClose={closeToast} />}
       
       {/* Header */}
-      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0`}>
+      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0 z-10`}>
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-left sm:items-center gap-3 sm:gap-2">
           <h1 className={`${darkMode ? 'text-gray-200' : 'text-gray-800'} py-1 sm:py-0 text-md sm:text-xl`}>Unicode Atlas</h1>
           
@@ -834,7 +834,7 @@ const UnicodeExplorer = () => {
             }}
           >
             <div 
-              className={`w-full sm:w-96 md:w-[42rem] ${darkMode ? 'bg-gray-800' : 'bg-white'} h-full overflow-auto shadow-xl transform transition-transform duration-300 ease-in-out`}
+              className={`w-full sm:w-96 md:w-[42rem] ${darkMode ? 'bg-gray-800' : 'bg-white'} h-full overflow-auto shadow-xl transform transition-transform duration-300 ease-in-out z-50`}
               style={{ 
                 animation: "slide-in 0.3s ease-out forwards",
                 fontFamily: "'Inter', sans-serif"
