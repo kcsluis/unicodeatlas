@@ -220,9 +220,13 @@ const UnicodeExplorer = () => {
         // Modified to use fetch instead of window.fs.readFile
         const response = await fetch('/unicode-data.json');
         const data = await response.json();
-        setAllCharacters(data);
-        setFilteredCharacters(data);
-        setVisibleCharacters(data.slice(0, BATCH_SIZE));
+
+        // Prefilter: Remove characters with name "Unknown"
+        const filteredData = data.filter(char => char.Name.toLowerCase() !== "unknown");
+
+        setAllCharacters(filteredData);
+        setFilteredCharacters(filteredData);
+        setVisibleCharacters(filteredData.slice(0, BATCH_SIZE));
       } catch (error) {
         console.error('Error loading data:', error);
         // Fallback if loading fails
@@ -326,17 +330,32 @@ const UnicodeExplorer = () => {
   // Apply search term filter
   if (searchTerm) {
     const searchLower = searchTerm.toLowerCase();
-    filtered = filtered.filter(char => 
-      char.Character.toLowerCase().includes(searchLower) ||
-      char.Name.toLowerCase().includes(searchLower) ||
-      char.Codepoint.toLowerCase().includes(searchLower) ||
-      (char["Alternative Names"] &&
-        (typeof char["Alternative Names"] === 'string' 
-          ? JSON.parse(char["Alternative Names"]).some(name => name.toLowerCase().includes(searchLower))
-          : char["Alternative Names"].some(name => name.toLowerCase().includes(searchLower))
-        )
-      )
-    );
+    filtered = filtered.filter(char => {
+      if (
+        char.Character.toLowerCase().includes(searchLower) ||
+        char.Name.toLowerCase().includes(searchLower) ||
+        char.Codepoint.toLowerCase().includes(searchLower)
+      ) {
+        return true;
+      }
+
+      // Safely parse "Alternative Names"
+      if (char["Alternative Names"]) {
+        try {
+          const altNames = typeof char["Alternative Names"] === 'string'
+            ? JSON.parse(char["Alternative Names"])
+            : char["Alternative Names"];
+
+          if (Array.isArray(altNames)) {
+            return altNames.some(name => name.toLowerCase().includes(searchLower));
+          }
+        } catch (e) {
+          console.error("JSON parse error in Alternative Names:", char["Alternative Names"], e);
+        }
+      }
+
+      return false;
+    });
   }
 
   // Apply category filter
@@ -965,7 +984,7 @@ const UnicodeExplorer = () => {
                       <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>HTML Entities</h3>
                       <p className={`mb-1 text-lg`}>Decimal: {selectedChar["Decimal Entity"]}</p>
                       <p className={`mb-1 text-lg`}>Hex: {selectedChar["Hex Entity"]}</p>
-                      {selectedChar["Named Entity"] && selectedChar["Named Entity"] !== "&;" && <p>Named: {selectedChar["Named Entity"]}</p>}
+                      {selectedChar["Named Entity"] && selectedChar["Named Entity"] !== "&;" && <p className={`mb-1 text-lg`}>Named: {selectedChar["Named Entity"]}</p>}
                     </div>
                   )}
 
