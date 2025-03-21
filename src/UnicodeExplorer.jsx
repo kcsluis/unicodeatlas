@@ -1023,7 +1023,7 @@ const UnicodeExplorer = () => {
               </div>
               
               <div className="pt-0 pl-6 pr-6 pb-6">
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-lg`}>
+                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-md`}>
                   <h3 className="text-xl mb-4 font-medium">Welcome to Unicode Atlas</h3>
                   <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
                     Unicode Atlas is an interactive explorer for Unicode characters. Browse, search, and discover the vast universe of symbols and scripts available in the Unicode standard.
@@ -1036,7 +1036,7 @@ const UnicodeExplorer = () => {
                   </p>
                 </div>
                 
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-lg`}>
+                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-md`}>
                   <h3 className="text-xl mb-4 font-medium">Features</h3>
                   <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
                     <li>Browse thousands of Unicode characters</li>
@@ -1050,20 +1050,7 @@ const UnicodeExplorer = () => {
                   </ul>
                 </div>
                 
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-lg`}>
-                  <h3 className="text-xl mb-4 font-medium">Coming Soon</h3>
-                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
-                    Stay tuned for upcoming features:
-                  </p>
-                  <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
-                    <li>Blog posts exploring interesting Unicode characters</li>
-                    <li>Advanced search options</li>
-                    <li>Custom character collections</li>
-                    <li>Share character sets with others</li>
-                  </ul>
-                </div>
-                
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-lg`}>
+                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-md`}>
                   <h3 className="text-xl mb-4 font-medium">Tips</h3>
                   <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
                     <li>Press <kbd className={`px-1.5 py-0.5 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded text-xs`}>Ctrl+/</kbd> to quickly access the search</li>
