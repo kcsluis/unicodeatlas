@@ -27,7 +27,7 @@ const Toast = ({ message, onClose }) => {
   
   return (
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-slide-down">
-      <div className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-lg flex items-center space-x-2">
+      <div className="bg-gray-900 text-white px-4 py-2 rounded-md shadow-lg flex items-center space-x-2">
         <Copy size={16} />
         <span>{message}</span>
       </div>
@@ -488,12 +488,12 @@ const UnicodeExplorer = () => {
 
   // Character Card Component
   const CharacterCard = ({ char, isFavorite, index, showActions = true }) => { return (
-    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow`}
+    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-stone-50'} rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow`}
       style={{
         animationDelay: `${index * 8}ms`, // Staggered delay
       }}>
       <div 
-        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-white border-b border-gray-100'} p-2`} 
+        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-stone-50 border-b border-stone-200'} p-2`} 
         style={{ fontFamily: selectedFont }}
         onClick={() => copyToClipboard(char.Character)}
       >
@@ -513,15 +513,15 @@ const UnicodeExplorer = () => {
         </span>
       )}*/}
       <div className="p-2">
-        <h3 className={`text-xs sm:text-sm truncate ${darkMode ? 'text-gray-300' : 'text-gray-800'}`} title={toTitleCase(char.Name)}>
+        <h3 className={`text-xs sm:text-sm truncate ${darkMode ? 'text-gray-300' : 'text-stone-800'}`} title={toTitleCase(char.Name)}>
           {toTitleCase(char.Name)}
         </h3>
-        <p className={`text-[9px] ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{char.Codepoint}</p>
+        <p className={`text-[9px] ${darkMode ? 'text-gray-400' : 'text-stone-500'}`}>{char.Codepoint}</p>
         
         {showActions && (
           <div className="flex justify-between mt-1">
             <button
-              className={`text-xs px-1 py-0.5 rounded ${darkMode ? 'text-gray-500 hover:text-indigo-400 hover:bg-indigo-800' : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-100'} transition-colors`}
+              className={`text-xs px-1 py-0.5 rounded ${darkMode ? 'text-gray-500 hover:text-indigo-400 hover:bg-indigo-800' : 'text-stone-600 hover:text-stone-600 hover:bg-stone-200'} transition-colors`}
               onClick={() => copyToClipboard(char.Character)}
               title="Copy to clipboard"
             >
@@ -529,7 +529,7 @@ const UnicodeExplorer = () => {
             </button>
             
             <button
-              className={`text-xs px-1 py-0.5 rounded ${darkMode ? 'text-gray-500 hover:text-indigo-400 hover:bg-indigo-800' : 'text-gray-600 hover:text-indigo-600 hover:bg-indigo-100'} transition-colors`}
+              className={`text-xs px-1 py-0.5 rounded ${darkMode ? 'text-gray-500 hover:text-indigo-400 hover:bg-indigo-800' : 'text-teal-600 hover:text-teal-700 hover:bg-teal-100'} transition-colors`}
               onClick={() => viewDetails(char)}
               title="View details"
             >
@@ -539,8 +539,8 @@ const UnicodeExplorer = () => {
             <button
               className={`text-xs px-1 py-0.5 rounded transition-colors ${
                 isFavorite
-                  ? 'text-yellow-500 hover:text-yellow-600'
-                  : darkMode ? 'text-gray-500 hover:text-yellow-500 hover:bg-yellow-900' : 'text-gray-600 hover:text-yellow-700 hover:bg-yellow-100'
+                  ? darkMode ? 'text-amber-500 hover:text-amber-600' : 'text-amber-500 hover:text-amber-600 hover:bg-amber-200'
+                  : darkMode ? 'text-gray-500 hover:text-yellow-500 hover:bg-yellow-900' : 'text-amber-400 hover:text-amber-700 hover:bg-amber-100'
               }`}
               onClick={() => toggleFavorite(char.Codepoint)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
@@ -555,23 +555,23 @@ const UnicodeExplorer = () => {
 
   // Main render
   return (
-    <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-black text-gray-100' : 'bg-gray-50 text-gray-800'}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-black text-gray-100' : 'bg-[#EEEDEC] text-stone-800'}`} style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* Toast notification */}
       {toast && <Toast message={toast} onClose={closeToast} />}
       
       {/* Header */}
-      <header className={`${darkMode ? 'bg-gray-900' : 'bg-white'} p-3 text-white shadow-md sticky top-0 z-10`}>
+      <header className={`${darkMode ? 'bg-gray-900' : 'bg-stone-50'} p-3 text-white shadow-md sticky top-0 z-10`}>
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-left sm:items-center gap-3 sm:gap-2">
-          <h1 className={`${darkMode ? 'text-gray-200' : 'text-gray-800'} py-1 sm:py-0 text-md sm:text-xl`}>Unicode Atlas</h1>
+          <h1 className={`${darkMode ? 'text-gray-200' : 'text-stone-800'} py-1 sm:py-0 text-md sm:text-xl`}>Unicode Atlas</h1>
           
           <div className="relative w-full sm:w-1/3">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Search className="h-4 w-4 text-stone-400" />
             </div>
             <input
               ref={searchInputRef}
               type="text"
-              className={`w-full pl-10 pr-4 py-1.5 rounded-lg ${darkMode ? 'bg-gray-800 text-white placeholder-gray-500 focus:ring-white' : 'bg-gray-100 text-gray-800 placeholder-gray-400 focus:ring-indigo-600'} focus:outline-none focus:ring-2`}
+              className={`w-full pl-10 pr-4 py-1.5 rounded-lg ${darkMode ? 'bg-gray-800 text-white placeholder-gray-500 focus:ring-white' : 'bg-stone-200 text-stone-800 placeholder-stone-400 focus:ring-stone-600'} focus:outline-none focus:ring-2`}
               placeholder="Search characters (Ctrl+/)"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -587,8 +587,8 @@ const UnicodeExplorer = () => {
                       ? 'bg-black hover:bg-gray-600' // Darker shade in dark mode
                       : 'text-gray-200 bg-gray-800 hover:bg-gray-600' 
                     : isFilterDrawerOpen 
-                      ? 'bg-indigo-600 hover:bg-indigo-300 text-white hover:text-indigo-800' // Darker indigo shade
-                      : 'bg-indigo-100 hover:bg-indigo-300 text-indigo-800'
+                      ? 'bg-stone-700 hover:bg-stone-800 text-stone-100 hover:text-stone-400' // Darker indigo shade
+                      : 'bg-stone-200 hover:bg-stone-400 text-stone-600 hover:text-stone-700'
                   }`}
                 onClick={() => setIsFilterDrawerOpen(!isFilterDrawerOpen)}
               >
@@ -598,7 +598,7 @@ const UnicodeExplorer = () => {
                 <span>{isFilterDrawerOpen ? "Filters" : "Filters"}</span>
                 
                 {(selectedCategory || selectedBlock) && 
-                  <span className={`${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-indigo-700'} 
+                  <span className={`${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-stone-100 text-stone-700'} 
                     text-xs rounded-full w-5 h-5 flex items-center justify-center`}>
                     {(selectedCategory ? 1 : 0) + (selectedBlock ? 1 : 0)}
                   </span>
@@ -614,7 +614,7 @@ const UnicodeExplorer = () => {
                   className={`flex h-8 items-center gap-1 px-3 py-1 ${
                     darkMode 
                       ? 'text-gray-200 bg-gray-800 hover:bg-gray-600' 
-                      : 'bg-indigo-100 hover:bg-indigo-300 text-indigo-800'
+                      : 'bg-stone-200 hover:bg-stone-400 text-stone-600 hover:text-stone-700'
                   } rounded-lg text-sm transition-colors`}
                   onClick={toggleFontMenu}
                 >
@@ -626,7 +626,7 @@ const UnicodeExplorer = () => {
                 {isFontMenuOpen && createPortal(
                   <div 
                     className={`fixed rounded-md shadow-lg z-[5000] font-menu-portal ${
-                      darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+                      darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-stone-200'
                     }`}
                     style={{
                       top: buttonPosition.top + buttonPosition.height - 24,
@@ -641,17 +641,17 @@ const UnicodeExplorer = () => {
                             selectedFont === font.value
                               ? darkMode
                                 ? 'bg-indigo-700 text-white' // Highlight in dark mode
-                                : 'bg-indigo-100 text-indigo-800' // Highlight in light mode
+                                : 'bg-stone-100 text-stone-800' // Highlight in light mode
                               : darkMode
                               ? 'text-gray-200 hover:bg-gray-700'
-                              : 'text-gray-700 hover:bg-gray-100'
+                              : 'text-sotne-700 hover:bg-stone-100'
                           }`}
                           style={{ fontFamily: font.value }}
                           onClick={() => selectFont(font.value)}
                         >
                           <span>{font.name}</span>
                           {selectedFont === font.value && (
-                            <Check size={16} className={` ${darkMode ? "text-indigo-100" : "text-indigo-400"}`}/>
+                            <Check size={16} className={` ${darkMode ? "text-indigo-100" : "text-stone-500"}`}/>
                           )}
                         </button>
                       ))}
@@ -663,7 +663,7 @@ const UnicodeExplorer = () => {
             
               {/* About button */}
               <button
-                className={`flex items-center justify-center w-8 h-8 rounded-lg ${darkMode ? 'text-gray-200 bg-gray-800 hover:bg-gray-600' : 'bg-indigo-100 text-indigo-800 hover:bg-indigo-300'} transition-colors`}
+                className={`flex items-center justify-center w-8 h-8 rounded-lg ${darkMode ? 'text-gray-200 bg-gray-800 hover:bg-gray-600' : 'bg-stone-200 text-stone-600 hover:bg-stone-400 hover:text-stone-700'} transition-colors`}
                 onClick={() => setShowAbout(true)}
                 aria-label="About"
               >
@@ -672,7 +672,7 @@ const UnicodeExplorer = () => {
               
               {/* Dark mode toggle */}
               <button
-                className={`flex items-center justify-center w-8 h-8 rounded-lg ${darkMode ? 'text-gray-200 bg-gray-800 hover:bg-gray-600' : 'bg-indigo-100 text-indigo-800 hover:bg-indigo-300'} transition-colors`}
+                className={`flex items-center justify-center w-8 h-8 rounded-lg ${darkMode ? 'text-gray-200 bg-gray-800 hover:bg-gray-600' : 'bg-stone-200 text-stone-600 hover:bg-stone-400 hover:text-stone-700'} transition-colors`}
                 onClick={toggleDarkMode}
                 aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
               >
@@ -685,12 +685,12 @@ const UnicodeExplorer = () => {
 
       {/* Filter drawer - fixed under header */}
       {isFilterDrawerOpen && (
-        <div className={`${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-white border-b border-gray-200'} p-3 shadow-md sticky top-14 z-10`}>
+        <div className={`${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-stone-50 border-b border-stone-300'} p-3 shadow-md sticky top-14 z-10`}>
           <div className="container mx-auto flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
-              <label className={`block text-xs ${darkMode ? 'text-gray-300' : 'text-gray-500'} mb-1`}>Category</label>
+              <label className={`block text-xs ${darkMode ? 'text-gray-300' : 'text-stone-500'} mb-1`}>Category</label>
               <select
-                className={`w-full rounded-md ${darkMode ? 'bg-gray-900 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-700'} h-8`}
+                className={`w-full rounded-md ${darkMode ? 'bg-gray-900 border-gray-600 text-white' : 'bg-stone-50 border-stone-300 text-stone-700'} h-8`}
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
@@ -704,9 +704,9 @@ const UnicodeExplorer = () => {
             </div>
             
             <div className="flex-1">
-              <label className={`block text-xs ${darkMode ? 'text-gray-300' : 'text-gray-500'} mb-1`}>Unicode Block</label>
+              <label className={`block text-xs ${darkMode ? 'text-gray-300' : 'text-stone-500'} mb-1`}>Unicode Block</label>
               <select
-                className={`w-full rounded-md ${darkMode ? 'bg-gray-900 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-700'} h-8`}
+                className={`w-full rounded-md ${darkMode ? 'bg-gray-900 border-gray-600 text-white' : 'bg-stone-50 border-stone-300 text-stone-700'} h-8`}
                 value={selectedBlock}
                 onChange={(e) => setSelectedBlock(e.target.value)}
               >
@@ -721,7 +721,7 @@ const UnicodeExplorer = () => {
             
             <div className="flex items-end">
               <button
-                className={`px-3 py-1.5 ${darkMode ? 'bg-gray-800 border-gray-600 hover:bg-gray-600' : 'bg-indigo-100 hover:bg-indigo-300 text-indigo-800'} rounded-md text-sm transition-colors`}
+                className={`px-3 py-1.5 ${darkMode ? 'bg-gray-800 border-gray-600 hover:bg-gray-600' : 'bg-stone-300 hover:bg-stone-400 text-stone-600 hover:text-stone-700'} rounded-md text-sm transition-colors`}
                 onClick={clearFilters}
               >
                 Clear Filters
@@ -735,11 +735,11 @@ const UnicodeExplorer = () => {
       <main className="flex-1 overflow-visible flex flex-col">
         {/* Favorites rail */}
         {favoriteCharacters.length > 0 && (
-          <div className={`${darkMode ? 'bg-gray-950 border-b border-gray-800' : 'bg-indigo-50 border-b border-indigo-100'} p-3`}>
+          <div className={`${darkMode ? 'bg-gray-950 border-b border-gray-800' : 'bg-stone-300 border-b border-stone-100'} p-3`}>
             <div className="container mx-auto overflow-visible">
               <div className="flex items-center mb-2">
-                <h2 className={`text-sm font-semibold ${darkMode ? 'text-gray-200' : 'text-indigo-800'}`}>Favorites</h2>
-                <span className={`ml-2 text-xs ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-indigo-200 text-indigo-800'} px-2 py-0.5 rounded-full`}>
+                <h2 className={`text-sm font-semibold ${darkMode ? 'text-gray-200' : 'text-stone-800'}`}>Favorites</h2>
+                <span className={`ml-2 text-xs ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-stone-200 text-stone-800'} px-2 py-0.5 rounded-full`}>
                   {favoriteCharacters.length}
                 </span>
               </div>
@@ -748,7 +748,7 @@ const UnicodeExplorer = () => {
                 <div className="flex gap-3 overflow-visible" style={{ minWidth: 'max-content' }}>
                   {favoriteCharacters.map((char) => (
                     <div key={char.Codepoint} className="w-14 flex-shrink-0">
-                      <div className={`${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} rounded shadow-lg overflow-hidden transition-shadow`}>
+                      <div className={`${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-stone-50 hover:bg-stone-100'} rounded shadow-lg overflow-hidden transition-shadow`}>
                         <div 
                           className={`h-12 flex justify-center items-center text-xl cursor-pointer ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}
                           onClick={() => copyToClipboard(char.Character)}
@@ -761,16 +761,16 @@ const UnicodeExplorer = () => {
                             char.Character
                           )}
                         </div>
-                        <div className={`${darkMode ? 'border-t border-gray-700 bg-gray-800' : 'border-t border-gray-100 bg-white'} p-1 flex justify-between items-center`}>
+                        <div className={`${darkMode ? 'border-t border-gray-700 bg-gray-800' : 'border-t border-gray-100 bg-stone-50'} p-1 flex justify-between items-center`}>
                           <button
-                            className={`${darkMode ? 'text-gray-300 hover:text-indigo-400' : 'text-gray-600 hover:text-indigo-600'}`}
+                            className={`${darkMode ? 'text-gray-300 hover:text-indigo-400' : 'text-teal-600 hover:text-teal-800'}`}
                             onClick={() => viewDetails(char)}
                             title="View details"
                           >
                             <Info size={12} />
                           </button>
                           <button
-                            className="text-yellow-500 hover:text-yellow-600"
+                            className={`${darkMode ? 'text-yellow-500 hover:text-yellow-600' : 'text-stone-400 hover:text-stone-500'}`}
                             onClick={() => toggleFavorite(char.Codepoint)}
                             title="Remove from favorites"
                           >
@@ -791,7 +791,7 @@ const UnicodeExplorer = () => {
           <div className="container mx-auto">
             {/* Results info */}
             <div className="mb-3 flex justify-between items-center text-xs mb-4">
-              <div className={darkMode ? 'text-gray-500' : 'text-gray-400'}>
+              <div className={darkMode ? 'text-gray-500' : 'text-stone-400'}>
                 Showing {visibleCharacters.length} of {filteredCharacters.length} characters
                 {(searchTerm || selectedCategory || selectedBlock) && " (filtered)"}
               </div>
@@ -820,17 +820,17 @@ const UnicodeExplorer = () => {
                 ref={loadingRef} 
                 className="flex justify-center items-center py-6"
               >
-                <div className={`w-8 h-8 rounded-full border-4 border-t-transparent animate-spin ${darkMode ? 'border-gray-600' : 'border-indigo-600'}`}></div>
+                <div className={`w-8 h-8 rounded-full border-4 border-t-transparent animate-spin ${darkMode ? 'border-gray-600' : 'border-stone-600'}`}></div>
               </div>
             )}
             
             {!isLoading && allCharacters.length > 0 && visibleCharacters.length === 0 && filteredCharacters.length === 0 && (
               <div className="flex justify-center items-center h-48">
                 <div className="text-center">
-                  <p className={darkMode ? 'mb-2 text-gray-400' : 'mb-2 text-gray-500'}>No characters found</p>
+                  <p className={darkMode ? 'mb-2 text-gray-400' : 'mb-2 text-stone-500'}>No characters found</p>
                   {(searchTerm || selectedCategory || selectedBlock) && (
                     <button
-                      className={`px-3 py-1 ${darkMode ? 'bg-gray-700 text-indigo-300 hover:bg-gray-600' : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'} rounded-md text-sm transition-colors`}
+                      className={`px-3 py-1 ${darkMode ? 'bg-gray-700 text-indigo-300 hover:bg-gray-600' : 'bg-stone-300 text-stone-600 hover:bg-stone-400 hover:text-stone-700'} rounded-md text-sm transition-colors`}
                       onClick={clearFilters}
                     >
                       Clear all filters
@@ -853,18 +853,18 @@ const UnicodeExplorer = () => {
             }}
           >
             <div 
-              className={`w-full sm:w-96 md:w-[42rem] ${darkMode ? 'bg-gray-800' : 'bg-white'} h-full overflow-auto shadow-xl transform transition-transform duration-300 ease-in-out z-50`}
+              className={`w-full sm:w-96 md:w-[42rem] ${darkMode ? 'bg-gray-800' : 'bg-stone-100'} h-full overflow-auto shadow-xl transform transition-transform duration-300 ease-in-out z-50`}
               style={{ 
                 animation: "slide-in 0.3s ease-out forwards",
                 fontFamily: "'Inter', sans-serif"
               }}
             >
-              <div className={`sticky top-0 ${darkMode ? 'bg-gray-800' : 'bg-white'} p-6 flex justify-between items-center`}>
+              <div className={`sticky top-0 ${darkMode ? 'bg-gray-800' : 'bg-stone-100'} p-6 flex justify-between items-center`}>
                 <h2 className="text-2xl font-normal truncate" title={toTitleCase(selectedChar.Name)}>
                   {toTitleCase(selectedChar.Name)}
                 </h2>
                 <button 
-                  className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-500 hover:text-indigo-800 hover:bg-indigo-100 rounded'}
+                  className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-stone-500 hover:text-stone-800 rounded'}
                   onClick={closeDetails}
                 >
                   <X size={20} />
@@ -872,7 +872,7 @@ const UnicodeExplorer = () => {
               </div>
               
               <div className="pt-0 pl-6 pr-6 pb-6">
-                <div className={`flex justify-center items-center mb-6 p-4 ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-lg`}>
+                <div className={`flex justify-center items-center mb-6 p-4 ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-stone-50 border border-gray-200'} rounded-2xl shadow-lg`}>
                   <span className="text-[194px] min-h-[1.5em]" style={{ fontFamily: selectedFont }}>
                     {selectedChar.Category_long === "Separator, Space" ? (
                       <span className={`inline-block border h-[1.5em] px-1 border-dashed ${darkMode ? 'bg-pink-950 border-pink-400' : 'bg-pink-50 border-pink-300'} py-1`}>{selectedChar.Character}</span>
@@ -884,7 +884,7 @@ const UnicodeExplorer = () => {
                 
                 <div className="flex justify-center gap-4 mb-10">
                   <button
-                    className={`flex items-center gap-1 px-3 py-1.5 ${darkMode ? 'bg-indigo-700 hover:bg-indigo-600 text-white' : 'bg-indigo-100 hover:bg-indigo-300 text-indigo-800'} rounded-md transition-colors`}
+                    className={`flex items-center gap-1 px-3 py-1.5 ${darkMode ? 'bg-indigo-700 hover:bg-indigo-600 text-white' : 'bg-stone-600 hover:bg-stone-700 text-stone-100 hover:text-stone-200'} rounded-md transition-colors`}
                     onClick={() => copyToClipboard(selectedChar.Character)}
                   >
                     <Copy size={16} />
@@ -896,10 +896,10 @@ const UnicodeExplorer = () => {
                       favorites.includes(selectedChar.Codepoint)
                         ? darkMode 
                           ? 'bg-yellow-700 text-yellow-100 hover:bg-yellow-600' 
-                          : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                          : 'bg-amber-300 text-amber-800 hover:bg-amber-400'
                         : darkMode 
                           ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' 
-                          : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                          : 'bg-amber-200 text-amber-800 hover:bg-amber-300'
                     }`}
                     onClick={() => toggleFavorite(selectedChar.Codepoint)}
                   >
@@ -911,7 +911,7 @@ const UnicodeExplorer = () => {
                     className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-colors ${
                       darkMode 
                         ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' 
-                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                        : 'bg-stone-200 text-stone-800 hover:bg-stone-300'
                     }`}
                     onClick={() => {
                       const deepLink = `${window.location.origin}/?char=${encodeURIComponent(selectedChar.Codepoint)}`;
@@ -927,31 +927,31 @@ const UnicodeExplorer = () => {
                 <div className="space-y-6">
                   <div className="flex space-x-6">
                     <div>
-                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Codepoint</h3>
+                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>Codepoint</h3>
                       <p className="mb-1 text-lg">{selectedChar.Codepoint}</p>
                     </div>
 
                     <div>
-                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Category</h3>
+                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>Category</h3>
                       <p className="mb-1 text-lg">{selectedChar["Category_long"] || selectedChar.Category}</p>
                     </div>
                   </div>
                   
                   {selectedChar["Character Description"] && (
                     <div>
-                      <h3 className={`mb-2 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Description</h3>
+                      <h3 className={`mb-2 text-xs ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>Description</h3>
                       <p className="text-sm leading-relaxed mb-6">{selectedChar["Character Description"]}</p>
                     </div>
                   )}
                   
                   {selectedChar["Alternative Names"] && (
                     <div>
-                      <h3 className={`text-xs mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Alternative Names</h3>
+                      <h3 className={`text-xs mb-3 ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>Alternative Names</h3>
                       <div className="flex flex-wrap gap-1 mt-1 mb-6">
                         {getAlternativeNames(selectedChar).map((name, index) => (
                           <span 
                             key={index}
-                            className={`inline-block px-3 py-1 m-[1px] text-sm ${darkMode ? 'bg-gray-700' : 'text-gray-500 bg-gray-100'} rounded-full`}
+                            className={`inline-block px-3 py-1 m-[1px] text-sm ${darkMode ? 'bg-gray-700' : 'text-stone-600 bg-stone-200'} rounded-full`}
                           >
                             {name}
                           </span>
@@ -962,12 +962,12 @@ const UnicodeExplorer = () => {
                   
                   {selectedChar["Wikipedia Link"] && (
                     <div className={``}>
-                      <h3 className={`text-xs mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Links</h3>
+                      <h3 className={`text-xs mb-2 ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>Links</h3>
                       <a 
                         href={selectedChar["Wikipedia Link"]} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className={`text-lg mb-2 ${darkMode ? 'text-indigo-400 hover:underline' : 'text-indigo-600 hover:underline'}`}
+                        className={`text-lg mb-2 ${darkMode ? 'text-indigo-400 hover:underline' : 'text-teal-700 hover:text-teal-800 hover:underline'}`}
                       >
                         Wikipedia
                       </a>
@@ -975,13 +975,13 @@ const UnicodeExplorer = () => {
                   )}
 
                   <div>
-                    <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>Unicode Block</h3>
+                    <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>Unicode Block</h3>
                     <p className={`mb-1 text-lg`}>{selectedChar["Unicode Block"]}</p>
                   </div>
                   
                   {selectedChar["Decimal Entity"] && (
                     <div className={`pb-6`}>
-                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'}`}>HTML Entities</h3>
+                      <h3 className={`mb-1 text-xs ${darkMode ? 'text-gray-400' : 'text-stone-400'}`}>HTML Entities</h3>
                       <p className={`mb-1 text-lg`}>Decimal: {selectedChar["Decimal Entity"]}</p>
                       <p className={`mb-1 text-lg`}>Hex: {selectedChar["Hex Entity"]}</p>
                       {selectedChar["Named Entity"] && selectedChar["Named Entity"] !== "&;" && <p className={`mb-1 text-lg`}>Named: {selectedChar["Named Entity"]}</p>}
@@ -1006,16 +1006,16 @@ const UnicodeExplorer = () => {
             }}
           >
             <div 
-              className={`w-full sm:w-96 md:w-[42rem] ${darkMode ? 'bg-gray-900' : 'bg-white'} h-full overflow-auto shadow-xl transform transition-transform duration-300 ease-in-out`}
+              className={`w-full sm:w-96 md:w-[42rem] ${darkMode ? 'bg-gray-900' : 'bg-stone-100'} h-full overflow-auto shadow-xl transform transition-transform duration-300 ease-in-out`}
               style={{ 
                 animation: "slide-in 0.3s ease-out forwards",
                 fontFamily: "'Inter', sans-serif"
               }}
             >
-              <div className={`sticky top-0 ${darkMode ? 'bg-gray-900' : 'bg-white'} p-6 flex justify-between items-center`}>
+              <div className={`sticky top-0 ${darkMode ? 'bg-gray-900' : 'bg-stone-10'} p-6 flex justify-between items-center`}>
                 <h2 className="text-2xl font-normal">About Unicode Atlas</h2>
                 <button 
-                  className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-500 hover:text-indigo-800 hover:bg-indigo-100 rounded'}
+                  className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-stone-500 hover:text-stone-800 rounded'}
                   onClick={() => setShowAbout(false)}
                 >
                   <X size={20} />
@@ -1023,22 +1023,22 @@ const UnicodeExplorer = () => {
               </div>
               
               <div className="pt-0 pl-6 pr-6 pb-6">
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-md`}>
+                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-stone-50 border border-stone-200'} rounded-2xl shadow-md`}>
                   <h3 className="text-xl mb-4 font-medium">Welcome to Unicode Atlas</h3>
-                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
+                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-stone-800'}`}>
                     Unicode Atlas is an interactive explorer for Unicode characters. Browse, search, and discover the vast universe of symbols and scripts available in the Unicode standard.
                   </p>
-                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
+                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-stone-800'}`}>
                     This tool allows you to explore characters by category or Unicode block, search for specific characters, and maintain a personal collection of favorites for quick access.
                   </p>
-                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
+                  <p className={`mb-4 ${darkMode ? 'text-gray-400' : 'text-stone-800'}`}>
                     Created by Karl Sluis
                   </p>
                 </div>
                 
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-md`}>
+                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-stone-50 border border-stone-200'} rounded-2xl shadow-md`}>
                   <h3 className="text-xl mb-4 font-medium">Features</h3>
-                  <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
+                  <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-stone-800'}`}>
                     <li>Browse thousands of Unicode characters</li>
                     <li>Filter by category and Unicode block</li>
                     <li>Search by character, name, or codepoint</li>
@@ -1050,11 +1050,11 @@ const UnicodeExplorer = () => {
                   </ul>
                 </div>
                 
-                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border border-gray-100'} rounded-2xl shadow-md`}>
+                <div className={`mb-6 p-6 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-stone-50 border border-stone-200'} rounded-2xl shadow-md`}>
                   <h3 className="text-xl mb-4 font-medium">Tips</h3>
-                  <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-gray800'}`}>
-                    <li>Press <kbd className={`px-1.5 py-0.5 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded text-xs`}>Ctrl+/</kbd> to quickly access the search</li>
-                    <li>Press <kbd className={`px-1.5 py-0.5 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded text-xs`}>Escape</kbd> to close panels</li>
+                  <ul className={`list-disc list-inside space-y-2 ${darkMode ? 'text-gray-400' : 'text-stone-800'}`}>
+                    <li>Press <kbd className={`px-1.5 py-0.5 ${darkMode ? 'bg-gray-700' : 'bg-stone-200'} rounded text-xs`}>Ctrl+/</kbd> to quickly access the search</li>
+                    <li>Press <kbd className={`px-1.5 py-0.5 ${darkMode ? 'bg-gray-700' : 'bg-stone-200'} rounded text-xs`}>Escape</kbd> to close panels</li>
                     <li>Click on characters in the favorites bar to copy them</li>
                   </ul>
                 </div>
