@@ -496,12 +496,12 @@ const UnicodeExplorer = () => {
 
   // Character Card Component
   const CharacterCard = ({ char, isFavorite, index, showActions = true }) => { return (
-    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-stone-50'} rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow`}
+    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-stone-50'} rounded-lg shadow overflow-hidden hover:shadow-lg active:scale-[0.97] active:shadow-none transition-all`}
       style={{
         animationDelay: `${index * 8}ms`, // Staggered delay
       }}>
       <div
-        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700 hover:ring-2 hover:ring-inset hover:ring-indigo-500 active:bg-black active:ring-0' : 'bg-stone-50 border-b border-stone-200 hover:ring-2 hover:ring-inset hover:ring-stone-400 active:bg-stone-200 active:ring-0'} p-2 transition-all`}
+        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-stone-50 border-b border-stone-200'} p-2 transition-all`}
         style={{ fontFamily: selectedFont }}
         onClick={() => copyToClipboard(char.Character)}
       >
@@ -520,7 +520,7 @@ const UnicodeExplorer = () => {
           />
         </span>
       )}*/}
-      <div className="p-2">
+      <div className="p-2 active:scale-[1] active:shadow-lg">
         <h3 className={`text-xs sm:text-sm truncate ${darkMode ? 'text-gray-300' : 'text-stone-800'}`} title={toTitleCase(char.Name)}>
           {toTitleCase(char.Name)}
         </h3>
