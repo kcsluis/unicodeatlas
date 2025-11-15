@@ -127,6 +127,14 @@ const UnicodeExplorer = () => {
   const observerRef = useRef(null);
   const loadingRef = useRef(null);
 
+  // Auto-focus search input on desktop (not mobile)
+  useEffect(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (!isMobile && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
+
   const [buttonPosition, setButtonPosition] = useState({ top: 0, right: 0, height: 0 });
   const fontButtonRef = useRef(null);
   const isSearching = searchTerm.length > 0; // Detect if searching
