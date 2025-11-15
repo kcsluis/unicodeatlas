@@ -589,16 +589,23 @@ const UnicodeExplorer = () => {
           <div className="flex justify-between sm:items-center space-x-2">
             <div>
               <button
-                className={`flex h-8 items-center gap-1 px-3 py-1 rounded-lg text-sm transition-colors 
-                  ${darkMode 
-                    ? isFilterDrawerOpen 
+                className={`flex h-8 items-center gap-1 px-3 py-1 rounded-lg text-sm transition-colors
+                  ${darkMode
+                    ? isFilterDrawerOpen
                       ? 'bg-black hover:bg-gray-600' // Darker shade in dark mode
-                      : 'text-gray-200 bg-gray-800 hover:bg-gray-600' 
-                    : isFilterDrawerOpen 
+                      : 'text-gray-200 bg-gray-800 hover:bg-gray-600'
+                    : isFilterDrawerOpen
                       ? 'bg-stone-700 hover:bg-stone-800 text-stone-100 hover:text-stone-400' // Darker indigo shade
                       : 'bg-stone-200 hover:bg-stone-400 text-stone-600 hover:text-stone-700'
                   }`}
-                onClick={() => setIsFilterDrawerOpen(!isFilterDrawerOpen)}
+                onClick={() => {
+                  if (isFilterDrawerOpen) {
+                    // Clear filters when closing the drawer
+                    setSelectedCategory('');
+                    setSelectedBlock('');
+                  }
+                  setIsFilterDrawerOpen(!isFilterDrawerOpen);
+                }}
               >
                 {/* Switch icons based on isFilterDrawerOpen */}
                 {isFilterDrawerOpen ? <X size={16} /> : <Filter size={16} />}
