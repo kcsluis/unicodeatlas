@@ -496,12 +496,12 @@ const UnicodeExplorer = () => {
 
   // Character Card Component
   const CharacterCard = ({ char, isFavorite, index, showActions = true }) => { return (
-    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-stone-50'} rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow`}
+    <div className={`relative character-card ${isSearching ? "no-animation" : ""} ${darkMode ? 'bg-gray-900' : 'bg-stone-50'} rounded-lg shadow overflow-hidden hover:shadow-md active:shadow-none active:scale-95 transition-all`}
       style={{
         animationDelay: `${index * 8}ms`, // Staggered delay
       }}>
-      <div 
-        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700' : 'bg-stone-50 border-b border-stone-200'} p-2`} 
+      <div
+        className={`flex cursor-pointer justify-center items-center h-16 sm:h-20 text-4xl ${darkMode ? 'bg-gray-900 border-b border-gray-700 active:bg-black' : 'bg-stone-50 border-b border-stone-200 active:bg-stone-200'} p-2 transition-colors`}
         style={{ fontFamily: selectedFont }}
         onClick={() => copyToClipboard(char.Character)}
       >
