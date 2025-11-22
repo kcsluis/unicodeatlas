@@ -815,6 +815,23 @@ const UnicodeExplorer = () => {
                 {allCharacters.length - unsupportedCharacterCount} characters supported by {selectedFont.match(/'([^']+)'|([^,]+)/)[1] || selectedFont} (
                 {Math.round(((allCharacters.length - unsupportedCharacterCount) / allCharacters.length) * 100)}%)
               </p>*/}
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  const page = encodeURIComponent(window.location.href);
+                  const base =
+                    "https://docs.google.com/forms/d/e/1FAIpQLSeo41Z-cBufk8wgcXQqC0n-lUqk7t4zttPfeelvjJ_Optcovw/viewform?usp=pp_url&entry.196095633={PAGE}";
+                  window.open(base.replace("{PAGE}", page), "_blank", "noopener,noreferrer");
+                }}
+                href="#"
+                className={`${
+                  darkMode
+                    ? "text-indigo-400 hover:underline"
+                    : "text-teal-700 hover:underline"
+                } transition-colors`}
+              >
+                Give feedback
+              </a>
             </div>
             
             {/* Character grid */}
@@ -1003,6 +1020,28 @@ const UnicodeExplorer = () => {
                     </div>
                   )}
 
+                  <div className={`p-4 ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-stone-200 border-stone-300'} rounded-lg`}>
+                    <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-stone-600'}`}>
+                      See something wrong?{' '}
+                      <a
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const page = encodeURIComponent(window.location.href);
+                          const base =
+                            "https://docs.google.com/forms/d/e/1FAIpQLSeo41Z-cBufk8wgcXQqC0n-lUqk7t4zttPfeelvjJ_Optcovw/viewform?usp=pp_url&entry.196095633={PAGE}";
+                          window.open(base.replace("{PAGE}", page), "_blank", "noopener,noreferrer");
+                        }}
+                        href="#"
+                        className={`${
+                          darkMode
+                            ? "text-indigo-400 hover:underline"
+                            : "text-teal-700 hover:underline"
+                        } transition-colors`}
+                      >
+                        Give feedback
+                      </a>
+                    </p>
+                  </div>
 
                 </div>
               </div>
